@@ -4,14 +4,16 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Apriori
 {
 	List<List<String>> resultsBySize;
-	List<List<String>> transactions;
+	List<Map<String, Integer>> transactions;
 	Integer min_sup = 20;
 	BufferedReader br;
 	BufferedWriter bw;
@@ -69,19 +71,18 @@ public class Apriori
 	{
 		String[] strList = s.split(" ");
 		int count = 0;
+		boolean flag;
 		
-		for (List<String> t : transactions) {
-			int i=0, j=0;
-			while (i < t.size() && j < strList.length) {
-				if (t.get(i).equals(strList[j])) {
-					i++;
-					j++;
-				} else {
-					i++;
+		for (Map<String, Integer> t : transactions) {
+			flag = true;
+			for (int i=0; i<strList.length; i++) {
+				if (!t.containsKey(strList[i])) {
+					flag = false;
+					break;
 				}
 			}
 			
-			if (j == strList.length) {
+			if (flag == true) {
 				count++;
 			}
 		}
@@ -153,15 +154,16 @@ public class Apriori
 		String str;
 		String[] strList;
 		Set<String> result = new HashSet<>();
-		List<String> resultMinSup = new ArrayList<>(), temp;
+		List<String> resultMinSup = new ArrayList<>();
+		Map<String, Integer> temp = new HashMap<>();
 		
 		while ((str = br.readLine()) != null) {
 			strList = str.split(" ");
-			temp = new ArrayList<>();
+			temp = new HashMap<>();
 			
 			for (int i=0; i<strList.length; i++) {
 				result.add(strList[i]);
-				temp.add(strList[i]);
+				temp.put(strList[i], 0);
 			}
 			
 			transactions.add(temp);

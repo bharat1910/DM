@@ -18,6 +18,7 @@ public class AprioriMultiThreaded extends Thread
 	
 	public static void main(String[] args) throws InterruptedException
 	{
+		long start = System.currentTimeMillis();
 		AprioriMultiThreaded t1 = new AprioriMultiThreaded("0");
 		AprioriMultiThreaded t2 = new AprioriMultiThreaded("1");
 		AprioriMultiThreaded t3 = new AprioriMultiThreaded("2");
@@ -35,6 +36,10 @@ public class AprioriMultiThreaded extends Thread
 		t3.join();
 		t4.join();
 		t5.join();
+		long end = System.currentTimeMillis();
+		
+		System.out.println();
+		System.out.println("Time taken : " + (end - start));
 		
 		System.exit(0);
 	}
