@@ -112,7 +112,7 @@ public class Apriori
 		}
 		
 		for (int i=0; i<result.size(); i++) {
-			if (allSubsetsValid(result.get(i)) && countOverMinSup(result.get(i))) {
+			if (/** allSubsetsValid(result.get(i)) && **/countOverMinSup(result.get(i))) {
 				resultMinSup.add(result.get(i));
 			}
 		}
