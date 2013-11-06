@@ -12,7 +12,7 @@ public class Apriori
 {
 	List<List<String>> resultsBySize;
 	List<List<String>> transactions;
-	Integer min_sup = 50;
+	Integer min_sup = 20;
 	BufferedReader br;
 	BufferedWriter bw;
 	
