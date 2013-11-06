@@ -16,6 +16,31 @@ public class Apriori
 	BufferedReader br;
 	BufferedWriter bw;
 	
+	private boolean containsPattern(int index, String str)
+	{
+		String[] strList = str.split(" ");
+		String[] patternList;
+		
+		for (String p : resultsBySize.get(index)) {
+			patternList = p.split(" ");
+			int i=0, j=0;
+			while (i < patternList.length && j < strList.length) {
+				if (patternList[i].trim().equals(strList[j].trim())) {
+					i++;
+					j++;
+				} else {
+					i++;
+				}
+			}
+			
+			if (j == strList.length) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	private boolean allSubsetsValid(String s)
 	{
 		String temp;
@@ -27,13 +52,13 @@ public class Apriori
 		
 		for (int i=0; i<strList.length - 1; i++) {
 			temp = s.replace(strList[i] + " ", "");
-			if (!resultsBySize.get(strList.length - 2).contains(temp)) {
+			if (!containsPattern(strList.length - 2, temp)) {
 				return false;
 			}
 		}
 		
 		temp = s.replace(" " + strList[strList.length - 1], "");
-		if (!resultsBySize.get(strList.length - 2).contains(temp)) {
+		if (!containsPattern(strList.length - 2, temp)) {
 			return false;
 		}
 		
@@ -112,7 +137,7 @@ public class Apriori
 		}
 		
 		for (int i=0; i<result.size(); i++) {
-			if (/** allSubsetsValid(result.get(i)) && **/countOverMinSup(result.get(i))) {
+			if (allSubsetsValid(result.get(i)) && countOverMinSup(result.get(i))) {
 				resultMinSup.add(result.get(i));
 			}
 		}
