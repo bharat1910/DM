@@ -179,19 +179,10 @@ public class Apriori
 		bw.close();
 	}
 	
-	private void run() throws IOException
+	public Apriori(int i) throws IOException
 	{
-		for (int i=0; i<5; i++) {
-			resultsBySize = new ArrayList<>();
-			transactions = new ArrayList<>();
-			runAprioriForFile(i);
-		}
-	}
-	
-	public static void main(String[] args) throws IOException
-	{
-		Apriori main = new Apriori();
-		main.run();
-		System.exit(0);
+		resultsBySize = new ArrayList<>();
+		transactions = new ArrayList<>();
+		runAprioriForFile(i);
 	}
 }
