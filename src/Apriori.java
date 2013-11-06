@@ -148,7 +148,7 @@ public class Apriori
 	private void runAprioriForFile(int index) throws IOException
 	{
 		br = new BufferedReader(new FileReader("src/topic-" + index + ".txt"));
-		bw = new BufferedWriter(new FileWriter("src/pattern-" + index + ".txt"));
+		bw = new BufferedWriter(new FileWriter("src/patterns/pattern-" + index + ".txt"));
 		
 		String str;
 		String[] strList;
