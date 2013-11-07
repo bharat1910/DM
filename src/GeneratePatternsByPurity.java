@@ -16,6 +16,7 @@ public class GeneratePatternsByPurity {
 	
 	int[][] linesByTopics;
 	Map<String, Double> patternPurityMap;
+	Map<String, Double> patternCountMap;
 	List<List<Map<String, Integer>>> allTransactionsByTopic;
 	
 	private void generateLinesCountByTopic() throws IOException {
@@ -47,12 +48,6 @@ public class GeneratePatternsByPurity {
 				linesByTopics[j][i] = union.size();
 			}
 		}
-		
-		System.out.println(linesByTopics[0][0]);
-		System.out.println(linesByTopics[0][1]);
-		System.out.println(linesByTopics[0][2]);
-		System.out.println(linesByTopics[0][3]);
-		System.out.println(linesByTopics[0][4]);
 		
 		br.close();
 	}
@@ -144,6 +139,7 @@ public class GeneratePatternsByPurity {
 			
 			purity = Math.log10(frequency/lines) - Math.log10(max);
 			patternPurityMap.put(str, purity);
+			patternCountMap.put(str, frequency);
 		}
 		
 		List<String> patternPurityList = new ArrayList<>();
@@ -154,7 +150,9 @@ public class GeneratePatternsByPurity {
 		Collections.sort(patternPurityList, new Comparator<String>() {
 			@Override
 			public int compare(String o1, String o2) {
-				return (patternPurityMap.get(o2).compareTo(patternPurityMap.get(o1)));
+				Double d1 = patternPurityMap.get(o1) * patternCountMap.get(o1);
+				Double d2 = patternPurityMap.get(o2) * patternCountMap.get(o2);
+				return d2.compareTo(d1);
 			}
 		});
 		
@@ -173,6 +171,7 @@ public class GeneratePatternsByPurity {
 		
 		for (int i=0; i<5; i++) {
 			patternPurityMap = new HashMap<>();
+			patternCountMap = new HashMap<>();
 			generatePatternsByPurity(i);
 		}
 	}
