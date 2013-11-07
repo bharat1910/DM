@@ -15,11 +15,29 @@ import java.util.Set;
 public class GeneratePatternsAdditional {
 	
 	double omega = 0.4;
+	double theta = 0.2;
 	int[][] linesByTopics;
 	Map<String, Double> patternPurityMap;
 	Map<String, Double> patternCountMap;
 	Map<String, Double> patternPhrasenessMap;
 	List<List<Map<String, Integer>>> allTransactionsByTopic;
+	
+	private boolean isSubset(String s1, String s2) {
+		String[] strList = s1.split(" ");
+		String[] strList2 = s2.split(" ");
+		Map<String, Integer> map =  new HashMap<>();
+		for (int i=0; i<strList2.length; i++) {
+			map.put(strList2[i], 0);
+		}
+		
+		for (int i=0; i<strList.length; i++) {
+			if (!map.containsKey(strList[i])) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 	
 	private void generateLinesCountByTopic() throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader("src/result/word-assignments.dat"));
@@ -156,6 +174,28 @@ public class GeneratePatternsAdditional {
 				term2  += Math.log(patternCountMap.get(s2)/lines);
 			}
 			patternPhrasenessMap.put(s, term1 - term2);
+		}
+		
+		List<String> patternsToBeRemoved = new ArrayList<>();
+		double check;
+		for (int i=0; i<patternPurityList.size(); i++) {
+			check = 0;
+			for (int j=0; j<patternPurityList.size(); j++) {
+				if (i != j && isSubset(patternPurityList.get(i), patternPurityList.get(j))) {
+					temp = patternCountMap.get(patternPurityList.get(j))/patternCountMap.get(patternPurityList.get(i));
+					if (temp > check) {
+						check = temp;
+					}
+				}
+			}
+			
+			if ((1 - check) <= theta) {
+				patternsToBeRemoved.add(patternPurityList.get(i));
+			}
+		}
+		
+		for (String s : patternsToBeRemoved) {
+			patternPurityList.remove(s);
 		}
 		
 		Collections.sort(patternPurityList, new Comparator<String>() {
