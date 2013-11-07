@@ -16,7 +16,8 @@ public class Apriori
 {
 	List<List<String>> resultsBySize;
 	List<Map<String, Integer>> transactions;
-	Integer min_sup = 20;
+	Integer min_sup_count;
+	Double min_support_percentage = 0.5;
 	BufferedReader br;
 	BufferedWriter bw;
 	HashMap<String, Integer> resultsBySupport;
@@ -90,7 +91,7 @@ public class Apriori
 			}
 		}
 		
-		if (count >= min_sup) {
+		if (count >= min_sup_count) {
 			System.out.println(s);
 			resultsBySupport.put(s, count);
 			return true;
@@ -171,6 +172,8 @@ public class Apriori
 			
 			transactions.add(temp);
 		}
+
+		min_sup_count = (int) (transactions.size() * min_support_percentage/100);
 		
 		for (String s : result) {
 			if (countOverMinSup(s)) {
