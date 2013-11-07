@@ -10,7 +10,17 @@ import java.util.List;
 public class GenerateClosedPatterns {
 	
 	HashMap<String, Integer> closedPatterns;
-	List<List<String>> transactions;
+	
+	private boolean isSuperSet(String s, int count)
+	{
+		for (String p : closedPatterns.keySet()) {
+			if (isSubset(s, p) && count == closedPatterns.get(p)) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 	
 	private boolean isSubset(String s1, String s2)
 	{
@@ -49,61 +59,35 @@ public class GenerateClosedPatterns {
 		}
 	}
 	
-	private int getCount(String s)
-	{
-		String[] strList = s.split(" ");
-		int count = 0;
-		
-		for (List<String> t : transactions) {
-			int i=0, j=0;
-			while (i < t.size() && j < strList.length) {
-				if (t.get(i).equals(strList[j])) {
-					i++;
-					j++;
-				} else {
-					i++;
-				}
-			}
-			
-			if (j == strList.length) {
-				count++;
-			}
-		}
-		
-		return count;
-	}
-	
 	private void generateClosedPatterns(int index) throws IOException
 	{
-		BufferedReader brTopic = new BufferedReader(new FileReader("src/topic-" + index + ".txt"));
 		BufferedReader br = new BufferedReader(new FileReader("src/patterns/pattern-" + index + ".txt"));
 		BufferedWriter bw = new BufferedWriter(new FileWriter("src/closed/closed-" + index + ".txt"));
 		String str;
 		String[] strList;
-		List<String> eachTransaction;
 		int count;
 		
-		while((str = brTopic.readLine()) != null) {
-			eachTransaction = new ArrayList<>();
-			strList = str.split(" ");
-			for (String s : strList) {
-				eachTransaction.add(s);
-			}
-			transactions.add(eachTransaction);
-		}
-		
 		while((str = br.readLine()) != null) {
-			count = getCount(str);
-			removeSubsets(str, count);
-			closedPatterns.put(str, count);
-			System.out.println("Added " + str);
+			strList = str.split(" ");
+			str = "";
+			for (int i=1; i<strList.length; i++){
+				str += strList[i] + " ";
+			}
+			str = str.trim();
+			
+			count = Integer.parseInt(strList[0]);
+			
+			if (isSuperSet(str, count)) {
+				removeSubsets(str, count);
+				closedPatterns.put(str, count);				
+				System.out.println("Added " + str);
+			}
 		}
 		
 		for (String s : closedPatterns.keySet()) {
 			bw.write(s + "\n");
 		}
 		
-		brTopic.close();
 		br.close();
 		bw.close();
 	}
@@ -112,7 +96,6 @@ public class GenerateClosedPatterns {
 	{
 		for (int i=0; i<5; i++) {
 			closedPatterns = new HashMap<>();
-			transactions = new ArrayList<>();
 			generateClosedPatterns(i);
 		}
 	}

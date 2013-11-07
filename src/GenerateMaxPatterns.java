@@ -53,8 +53,16 @@ public class GenerateMaxPatterns {
 		BufferedReader br = new BufferedReader(new FileReader("src/patterns/pattern-" + index + ".txt"));
 		BufferedWriter bw = new BufferedWriter(new FileWriter("src/max/max-" + index + ".txt"));
 		String str;
+		String[] strList;
 		
 		while((str = br.readLine()) != null) {
+			strList = str.split(" ");
+			str = "";
+			for (int i=1; i<strList.length; i++){
+				str += strList[i] + " ";
+			}
+			str = str.trim();
+			
 			removeSubsets(str);
 			maxPatterns.put(str, 0);
 			System.out.println("Added " + str);
