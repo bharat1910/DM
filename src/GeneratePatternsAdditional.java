@@ -14,6 +14,7 @@ import java.util.Set;
 
 public class GeneratePatternsAdditional {
 	
+	double omega = 0.4;
 	int[][] linesByTopics;
 	Map<String, Double> patternPurityMap;
 	Map<String, Double> patternCountMap;
@@ -105,7 +106,7 @@ public class GeneratePatternsAdditional {
 	private void generatePatternsByPurity(int index) throws IOException
 	{
 		BufferedReader br = new BufferedReader(new FileReader("src/patterns/pattern-" + index + ".txt"));
-		BufferedWriter bw = new BufferedWriter(new FileWriter("src/purity/purity-" + index + ".txt"));
+		BufferedWriter bw = new BufferedWriter(new FileWriter("src/bonus/bonus-" + index + ".txt"));
 		String str;
 		String[] strList;
 		Double frequency;
@@ -160,8 +161,8 @@ public class GeneratePatternsAdditional {
 		Collections.sort(patternPurityList, new Comparator<String>() {
 			@Override
 			public int compare(String o1, String o2) {
-				Double d1 = patternPurityMap.get(o1) * patternCountMap.get(o1);
-				Double d2 = patternPurityMap.get(o2) * patternCountMap.get(o2);
+				Double d1 = patternCountMap.get(o1) * ((omega * patternPurityMap.get(o1)) + ((1 - omega) * patternPhrasenessMap.get(o1)));
+				Double d2 = patternCountMap.get(o2) * ((omega * patternPurityMap.get(o2)) + ((1 - omega) * patternPhrasenessMap.get(o2)));
 				return d2.compareTo(d1);
 			}
 		});

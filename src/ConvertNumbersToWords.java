@@ -53,6 +53,7 @@ public class ConvertNumbersToWords
 		generatePhraseFiles("max", "max");
 		generatePhraseFiles("closed", "closed");
 		generatePhraseFiles("purity", "purity");
+		generatePhraseFiles("bonus", "bonus");
 	}
 	
 	public static void main(String[] args) throws IOException
