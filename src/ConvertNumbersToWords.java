@@ -17,8 +17,8 @@ public class ConvertNumbersToWords
 		String[] strList;
 		
 		for (int i=0; i<5; i++) {
-			BufferedReader br = new BufferedReader(new FileReader("src/" + folderName + "/" + fileName + "-" + i + ".txt"));
-			BufferedWriter bw = new BufferedWriter(new FileWriter("src/" + folderName + "/" + fileName + "-" + i + ".txt.phrase"));
+			BufferedReader br = new BufferedReader(new FileReader("src/" + folderName + fileName + "-" + i + ".txt"));
+			BufferedWriter bw = new BufferedWriter(new FileWriter("src/" + folderName + fileName + "-" + i + ".txt.phrase"));
 			
 			while ((str = br.readLine()) != null) {
 				strList = str.split(" ");
@@ -49,11 +49,12 @@ public class ConvertNumbersToWords
 		
 		br.close();
 		
-		generatePhraseFiles("patterns", "pattern");
-		generatePhraseFiles("max", "max");
-		generatePhraseFiles("closed", "closed");
-		generatePhraseFiles("purity", "purity");
-		generatePhraseFiles("bonus", "bonus");
+		generatePhraseFiles("patterns/", "pattern");
+		generatePhraseFiles("max/", "max");
+		generatePhraseFiles("closed/", "closed");
+		generatePhraseFiles("purity/", "purity");
+		generatePhraseFiles("bonus/", "bonus");
+		generatePhraseFiles("", "topic");
 	}
 	
 	public static void main(String[] args) throws IOException
