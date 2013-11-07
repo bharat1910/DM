@@ -4,6 +4,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +19,7 @@ public class Apriori
 	Integer min_sup = 20;
 	BufferedReader br;
 	BufferedWriter bw;
+	HashMap<String, Integer> resultsBySupport;
 	
 	private boolean containsPattern(int index, String str)
 	{
@@ -89,7 +92,7 @@ public class Apriori
 		
 		if (count >= min_sup) {
 			System.out.println(s);
-			bw.write(s + "\n");
+			resultsBySupport.put(s, count);
 			return true;
 		} else {
 			return false;
@@ -177,6 +180,22 @@ public class Apriori
 		resultsBySize.add(resultMinSup);
 		runApriori(resultMinSup);
 		
+		List<String> sortedResultsBySupport = new ArrayList<>();
+		for (String s : resultsBySupport.keySet()) {
+			sortedResultsBySupport.add(s);
+		}
+		
+		Collections.sort(sortedResultsBySupport, new Comparator<String>() {
+			@Override
+			public int compare(String arg0, String arg1) {
+				return resultsBySupport.get(arg1) - resultsBySupport.get(arg0);
+			}
+		});
+		
+		for (String s : sortedResultsBySupport) {
+			bw.write(resultsBySupport.get(s) + " " + s + "\n");
+		}
+		
 		br.close();
 		bw.close();
 	}
@@ -185,6 +204,7 @@ public class Apriori
 	{
 		resultsBySize = new ArrayList<>();
 		transactions = new ArrayList<>();
+		resultsBySupport = new HashMap<>();
 		runAprioriForFile(i);
 	}
 }
