@@ -4,6 +4,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -64,12 +66,24 @@ public class GenerateMaxPatterns {
 			str = str.trim();
 			
 			removeSubsets(str);
-			maxPatterns.put(str, 0);
+			maxPatterns.put(str, Integer.parseInt(strList[0]));
 			System.out.println("Added " + str);
 		}
 		
+		List<String> maxPatternsList = new ArrayList<>();
 		for (String s : maxPatterns.keySet()) {
-			bw.write(s + "\n");
+			maxPatternsList.add(s);
+		}
+		
+		Collections.sort(maxPatternsList, new Comparator<String>() {
+			@Override
+			public int compare(String o1, String o2) {
+				return maxPatterns.get(o2) - maxPatterns.get(o1);
+			}
+		});
+		
+		for (String s : maxPatternsList) {
+			bw.write(maxPatterns.get(s) + " " + s + "\n");
 		}
 		
 		br.close();

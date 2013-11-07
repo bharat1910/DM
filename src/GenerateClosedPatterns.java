@@ -4,6 +4,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -84,8 +86,20 @@ public class GenerateClosedPatterns {
 			}
 		}
 		
+		List<String> closedPatternsList = new ArrayList<>();
 		for (String s : closedPatterns.keySet()) {
-			bw.write(s + "\n");
+			closedPatternsList.add(s);
+		}
+		
+		Collections.sort(closedPatternsList, new Comparator<String>() {
+			@Override
+			public int compare(String o1, String o2) {
+				return closedPatterns.get(o2) - closedPatterns.get(o1);
+			}
+		});
+		
+		for (String s : closedPatternsList) {
+			bw.write(closedPatterns.get(s) + " " + s + "\n");
 		}
 		
 		br.close();
