@@ -3,7 +3,6 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Comparator;
 
 public class ReorganizeTermsByTopic
@@ -14,20 +13,6 @@ public class ReorganizeTermsByTopic
 			return Integer.parseInt(arg0) - Integer.parseInt(arg1);
 		}
 	};
-	
-	private String sortAsc(String s)
-	{
-		String[] strList = s.split(" ");
-		
-		Arrays.sort(strList, stringSortComparator);
-		
-		s = "";
-		for (int i=0; i<strList.length; i++) {
-			s += strList[i] + " ";
-		}
-		
-		return s.trim();
-	}
 	
 	private void run() throws IOException
 	{
@@ -55,7 +40,7 @@ public class ReorganizeTermsByTopic
 
 			for (int i=0; i<5; i++) {
 				if (!stri[i].equals("")) {
-					bw[i].write(sortAsc(stri[i]) + "\n");
+					bw[i].write(stri[i] + "\n");
 				}
 			}
 		}
