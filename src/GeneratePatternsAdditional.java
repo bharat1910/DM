@@ -208,7 +208,7 @@ public class GeneratePatternsAdditional {
 		});
 		
 		for (String s : patternPurityList) {
-			bw.write(patternPurityMap.get(s) + " " + s + "\n");
+			bw.write((patternCountMap.get(s) * ((omega * patternPurityMap.get(s)) + ((1 - omega) * patternPhrasenessMap.get(s)))) + " " + s + "\n");
 		}
 		
 		br.close();
