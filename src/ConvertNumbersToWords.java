@@ -23,7 +23,11 @@ public class ConvertNumbersToWords
 				strList = str.split(" ");
 				str = "";
 				
-				str += strList[0] + " ";
+				if (folderName.equals("")) {
+					str += vocab.get(Integer.parseInt(strList[0])) + " ";					
+				} else {
+					str += strList[0] + " ";
+				}
 				
 				for (int j=1; j<strList.length; j++) {
 					str += vocab.get(Integer.parseInt(strList[j])) + " ";
